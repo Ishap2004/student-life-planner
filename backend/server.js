@@ -5,29 +5,25 @@ require("dotenv").config();
 
 const app = express();
 
-// Middleware
 app.use(cors());
 app.use(express.json());
 
-// Test route
 app.get("/", (req, res) => {
   res.send("Student Life Planner API is running");
 });
 
-// Connect to MongoDB
 const connectDB = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URI); // No options needed in Mongoose 6+
+    await mongoose.connect(process.env.MONGO_URI); // Remove unsupported options
     console.log("✅ MongoDB Connected");
   } catch (err) {
     console.error("❌ MongoDB Connection Error:", err.message);
-    process.exit(1); // Exit if connection fails
+    process.exit(1);
   }
 };
 
 connectDB();
 
-// Example API route: GET tasks
 app.get("/tasks", async (req, res) => {
   try {
     const Task = mongoose.model(
@@ -41,7 +37,6 @@ app.get("/tasks", async (req, res) => {
   }
 });
 
-// Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
